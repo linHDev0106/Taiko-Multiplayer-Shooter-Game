@@ -47,29 +47,6 @@ contract PlayerGame {
         payable(msg.sender).transfer(address(this).balance); // Chuyển toàn bộ số dư cho người chơi
     }
 
-    // Hàm cho phép mỗi người chơi rút đúng 1 ETH và chỉ một lần
-    function withdrawOneEther() external {
-        bool isPlayer = false;
-        for (uint i = 0; i < 8; i++) {
-            if (msg.sender == players[i]) {
-                isPlayer = true;
-                break;
-            }
-        }
-        require(isPlayer, "You are not a player");
-        require(
-            !hasWithdrawnOneEther[msg.sender],
-            "You have already withdrawn 1 ETH"
-        );
-        require(
-            address(this).balance >= 1 ether,
-            "Insufficient balance in contract"
-        );
-
-        hasWithdrawnOneEther[msg.sender] = true; // Đánh dấu người chơi đã rút đúng 1 ETH
-        payable(msg.sender).transfer(1 ether); // Chuyển đúng 1 ETH cho người chơi
-    }
-
     // Nhận Ether vào hợp đồng
     receive() external payable {}
 
